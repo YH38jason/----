@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>主页-智羽论坛</title>
+</head>
+<body>
+    <style>
+        /*--预设--*/ 
+        body { padding:0px;margin: 0px; } 
+        #lyrow, #lyrow input, #lyrow textarea { font-size:12px;font-family: 'Microsoft YaHei', '微软雅黑', MicrosoftJhengHei, '华文细黑', STHeiti, MingLiu; } 
+        #lyrow { height:100vh;width: 100vw; } 
+        #lyrow div { min-height: 18px;  } 
+        #lyrow input, #lyrow textarea { border:rgb(235, 235, 235) 1px solid;border-radius: 3px;padding: 5px 8px;outline: 0; } 
+        #lyrow input:hover, #lyrow textarea:hover { border: 1px solid #6bc1f2; } 
+        /*--编辑--*/ 
+        #lyrow .topbtns { padding:10px 0 20px 15px; } 
+        #lyrow .regbtn { padding:0 13px 0 0; } 
+        #lyrow .title { padding:20px 0 10px 20px;background:radial-gradient(at 0% 0%,rgba(0, 251, 255, 1) 1%, rgba(247, 148, 247, 1) 100%); } 
+        #lyrow .hotpost { padding:30px 0 0 30px; } 
+        </style>
+        <link rel="stylesheet" href="https://www.58html.com/gui/css/font-awesome/css/font-awesome.css">
+        <div id="lyrow">
+            {% if not is_login %}
+            <div class="topbtns"> 
+                <a class="regbtn" href="reg">注册</a>
+                <a  href="login">登录<br></a>
+            </div>
+            {% endif %}
+            {% if is_login %}
+            <div class="topbtns"> 
+                <p>当前用户: {{username}}</P>
+                <a href="/user/unreg">注销</a>
+                <a href="/posting">我要发帖</a>
+                </div>
+            {% endif %}
+            <h1 class="title">智羽论坛</h1>
+            <div class="hotpost"> 
+                <p>热门帖子</p>
+                <p><b>{{author}}</b>&emsp;&emsp;{{title}}<br><br>喜欢 {{like}}&emsp;&emsp;&emsp;<a href="/postpage/{{title}}">点击浏览</a></p>
+            </div>
+            <form action="/s" method="POST">
+                <input type="text" name="keyword"/>
+                <input type="submit" name="commit" value="搜索"/>
+            </form>
+        </div>  
+</body>
+</html>

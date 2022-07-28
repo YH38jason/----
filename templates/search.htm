@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索-智羽论坛</title>
+</head>
+<body>
+    <style>
+    body { padding:0px;margin: 0px; } 
+    #lyrow .r { padding:30px 0 0 30px; float:right}
+    #lyrow .rs { padding:5px 0 0 5px; }
+    a {
+                display: block;
+    }
+    </style> 
+    <div id="lyrow", d="{{results}}">
+        <h3 style="padding: 10px 0 0 20px;">搜索结果</h3>
+        <script>
+            let result = eval(document.getElementById('lyrow').getAttribute('d'));
+            let div = document.createElement("div");
+            div.style.position = "absolute";
+            div.style.width = "100%"
+            div.style.height = "100%"
+            for (i=0;i < result.length;i++){
+                var a = document.createElement("a");
+                a.style.padding = "10px 0 0 20px";
+                let txt = document.createTextNode(result[i]);
+                a.appendChild(txt);
+                a.href = "/postpage/" + result[i];
+                div.appendChild(a);
+            }
+            document.body.appendChild(div)
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册-智羽论坛</title>
+</head>
+<body>
+    <form action="/reg/action" method="POST" class="text-center">
+        <p>用户名 <input type="text" name="Name"/></p>
+        <p>密码 <input type="password" name="Password"/></p>
+        <p>确认密码 <input type="password" name="PwdConfirm"/></p>
+        <p><input type="submit" value="提交"/></p>
+    </form>
+    {% if sensitive %}
+    <h3>用户名含敏感词汇</h3>
+    {% endif %}
+    {% if is_repeat %}
+    <h3>用户名已存在</h3>
+    {% endif %}
+    {% if pwd_diff %}
+    <h3>前后密码不相同</h3>
+    {% endif %}
+    {% if reg_fail %}
+    <h3>用户名或密码不合法!</h3>
+    {% endif %}
+
+</body>
+</html>
