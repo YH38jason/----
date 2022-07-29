@@ -7,12 +7,14 @@
     <title>注册-智羽论坛</title>
 </head>
 <body>
-    <form action="/reg/action" method="POST" class="text-center">
+    <form id="form" action="/reg/action" method="POST" class="text-center">
         <p>用户名 <input type="text" name="Name"/></p>
         <p>密码 <input type="password" name="Password"/></p>
         <p>确认密码 <input type="password" name="PwdConfirm"/></p>
         <p><input type="submit" value="提交"/></p>
     </form>
+    <div id="v_container" style="width: 200px;height: 50px;"></div>
+	<input type="text" id="code_input" value="" placeholder="请输入验证码"/>
     {% if sensitive %}
     <h3>用户名含敏感词汇</h3>
     {% endif %}
@@ -25,6 +27,20 @@
     {% if reg_fail %}
     <h3>用户名或密码不合法!</h3>
     {% endif %}
-
+    
 </body>
+<script src="{{ url_for('static',filename='gVerify.js') }}"></script>
+	<script>
+		var verifyCode = new GVerify("v_container");
+
+		document.getElementById("form").onsubmit = function(){
+			var res = verifyCode.validate(document.getElementById("code_input").value);
+			if(res){
+				document.getElementById("form").submit();
+			}else{
+                alert("验证码不正确！");
+				window.location.replace("/reg");
+			}
+		}
+    </script>
 </html>

@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}-智羽论坛</title>
     <style>
+        .crow {  
+            width: 800;  
+            height: 800;  
+            word-wrap:break-word;  
+            word-break:break-all;  
+            overflow: hidden;  
+        } 
         /*--预设--*/ 
         body { padding:0px;margin: 0px; } 
         #lyrow, #lyrow input, #lyrow textarea { font-size:12px;font-family: 'Microsoft YaHei', '微软雅黑', MicrosoftJhengHei, '华文细黑', STHeiti, MingLiu; } 
@@ -28,11 +35,15 @@
 <link rel="stylesheet" href="https://www.58html.com/gui/css/font-awesome/css/font-awesome.css">
 <div id="lyrow">
     <h1 class="title">{{title}}</h1>
-    <p class="content">{{content}}</p>
+    <p class="content crow">{{content}}</p>
 <div class="bottom">
     <a href="/postpage/{{title}}/like" class="like">点赞 {{ like }}</a>
     <p class="like">{{author}}</p>
+    {% if is_author %}
+    <a style="padding:0 0 0 13px;"href="/postpage/{{title}}/delete">删帖跑路</a>
+    {% endif %}
 </div>
+<a href="https://beian.miit.gov.cn/"style="display: block;padding:30px 0 0 13px;">豫ICP备2022011772号-1</a>
 </div>
 </body>
 </html>
