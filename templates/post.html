@@ -30,18 +30,20 @@
         </style>
 </head>
 <body>
-<!--下载font-awesome.css图标包-->
-<!--https://www.58html.com/html/template/font-awesome.zip-->
-<link rel="stylesheet" href="https://www.58html.com/gui/css/font-awesome/css/font-awesome.css">
-<div id="lyrow">
+<div id="lyrow" d="{{data}}">
     <h1 class="title">{{title}}</h1>
     <p class="content crow">{{content}}</p>
-<div class="bottom">
-    <a href="/postpage/{{title}}/like" class="like">点赞 {{ like }}</a>
-    <p class="like">{{author}}</p>
-    {% if is_author %}
-    <a style="padding:0 0 0 13px;"href="/postpage/{{title}}/delete">删帖跑路</a>
-    {% endif %}
+    <div class="bottom">
+        <a href="/postpage/{{title}}/like" class="like">点赞 {{ like }}</a>
+        <p class="like">{{author}}</p>
+        {% if is_author %}
+        <a style="padding:0 0 0 13px;"href="/postpage/{{title}}/delete">删帖跑路</a>
+        {% endif %}
+        <form action="/postpage/{{title}}/reply" style="padding:15px 0 0 13px;" method="POST">
+            <input type="text" placeholder="回帖" name="content"/>
+            <input type="submit" value="回复"/>
+        </form>
+        <p style="padding:0 0 0 13px; white-space: pre-line;" id="reply">{{reply}}</p>
 </div>
 <a href="https://beian.miit.gov.cn/"style="display: block;padding:30px 0 0 13px;">豫ICP备2022011772号-1</a>
 </div>

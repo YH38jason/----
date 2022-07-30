@@ -1,7 +1,8 @@
 #coding=utf-8
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import json
 import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -21,12 +22,14 @@ def home():
     sql = "SELECT * FROM POSTS"
     cur.execute(sql)
     posts = cur.fetchall()
-    ans = (None, None, -1)
+    ans = (None, None, 1)
     for post in posts:
         if post[2] >= ans[2]:
             ans = post
     con.close()
     if len(posts) == 0:
+        no_post = True
+    elif ans == (None, None, 1):
         no_post = True
     else:
         no_post = False
@@ -83,7 +86,6 @@ def search():
     results = json.dumps(result)
     return render_template('search.htm', results=results)
     # return str(results)
-        
     
 # 注册
 @app.route('/reg')
@@ -126,6 +128,10 @@ def viewPost(title):
     sql = "SELECT * FROM POSTS WHERE TITLE = ?"
     cur.execute(sql, (title,))
     post = cur.fetchall()[0]
+    replys = json.loads(post[4])
+    reply_string = ''
+    for reply in replys:
+        reply_string = reply_string + reply + '\n'*2
     # return str(post)
     con.close()
     if request.cookies.get('userName') == post[3]:
@@ -133,7 +139,7 @@ def viewPost(title):
     else:
         is_author = False
     return render_template('post.html', title=post[0], content=post[1].replace('\r', '')\
-        , like=post[2], author=post[3], is_author=is_author)
+        , like=post[2], author=post[3], is_author=is_author,reply=reply_string)
 
 # 点赞帖子
 @app.route('/postpage/<title>/like')
@@ -165,6 +171,25 @@ def like(title):
     con.close()
     return redirect(f'/postpage/{title}')
 
+# 回帖
+@app.route('/postpage/<title>/reply', methods=['GET', 'POST'])
+def reply_post(title):
+    if not isLogin():
+        return redirect('/login')
+    content = request.form['content']
+    con = sqlite3.connect('data.db')
+    cur = con.cursor()
+    sql = "SELECT REPLY FROM POSTS WHERE TITLE=?"
+    cur.execute(sql, (title,))
+    lst:list = json.loads(cur.fetchall()[0][0])
+    lst.append(f'{request.cookies.get("userName")}:{content}')
+    lst_s = json.dumps(lst)
+    sql = "UPDATE POSTS SET REPLY=? WHERE TITLE=?"
+    cur.execute(sql, (lst_s, title))
+    con.commit()
+    con.close()
+    return redirect('/postpage/{}'.format(title))
+
 # 删帖
 @app.route('/postpage/<title>/delete')
 def delete_post(title):
@@ -193,6 +218,11 @@ def posting():
     con.close()
     return redirect('/')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 if __name__ == '__main__':
     # 运行
-    app.run(port=2651, debug=False)
+    app.run(port=2651, debug=True)
+    # app.run(host="zhiyu.zxqblog.cn", port=2651, debug=False)
